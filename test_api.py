@@ -1,33 +1,42 @@
 import requests
 import allure
 import pytest
+import unittest
 
-# BASE_URL = "https://www.chitai-gorod.ru/"
-# BASE_URL = 
-BASE_URL_2 = "https://web-gate.chitai-gorod.ru/api/v2/"
-Bearer = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTgzODA1NTAsImlhdCI6MTcxODIxMjU1MCwiaXNzIjoiL2FwaS92MS9hdXRoL2Fub255bW91cyIsInN1YiI6Ijg1NmEyNjQ0NjZiYjA2Y2RlOGNiMzc4ZWNiNjc4MTM1ZmY2Yzk0MmE1NDI0Yjg0MzM1YmQxY2U4YjY1Y2I1ZTIiLCJ0eXBlIjoxMH0.UP79_uyJ3yb7nOPKIeIz3CWf58KBez1knlrqleWekM0"
+BASE_URL = "web-gate.chitai-gorod.ru/api/v1"
+BASE_URL_2 = "web-gate.chitai-gorod.ru/api/v2"
+TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTgzODA1NTAsImlhdCI6MTcxODIxMjU1MCwiaXNzIjoiL2FwaS92MS9hdXRoL2Fub255bW91cyIsInN1YiI6Ijg1NmEyNjQ0NjZiYjA2Y2RlOGNiMzc4ZWNiNjc4MTM1ZmY2Yzk0MmE1NDI0Yjg0MzM1YmQxY2U4YjY1Y2I1ZTIiLCJ0eXBlIjoxMH0.UP79_uyJ3yb7nOPKIeIz3CWf58KBez1knlrqleWekM0"
+book_id = "master-i-margarita-3018590"
 
 @allure.feature("API")
 @allure.story("Получение списка книг")
 @pytest.mark.api_test
 @pytest.mark.positive_test
+
 def test_get_books():
-    response = requests.get("{BASE_URL_2}products" headers = headers)
     headers = {
-          'content-type' : 'application/json',
-          'authorization' : 'Bearer'
-            }
-    assert response.status_code == 200
+        'content-type': 'application/json',
+        'authorization': f'Bearer {TOKEN}'
+    }
+    response = requests.get(f"https://{BASE_URL_2}/products", headers=headers)
+    assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"
+
 
 
 @allure.feature("API")
 @allure.story("Получение информации о книге по ID")
 @pytest.mark.api_test
 @pytest.mark.positive_test
+
 def test_get_book_by_id():
-    book_id = 3018590
-    response = requests.get(f"{BASE_URL}/products/{book_id}")
-    assert response.status_code == 404
+    book_id = "master-i-margarita-3018590"    
+    headers = {
+        'content-type': 'application/json',
+        'authorization': f'Bearer {TOKEN}'
+    }
+
+    response = requests.get(f"https://{BASE_URL}/products/slug/{book_id}", headers=headers)
+    assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"
 
 @allure.feature("API")
 @allure.story("Поиск книг")
