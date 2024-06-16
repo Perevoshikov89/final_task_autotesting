@@ -37,7 +37,8 @@ def test_get_book_by_id():
 
     response = requests.get(f"https://{BASE_URL}/products/slug/{book_id}", headers=headers)
     assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"
-
+    assert "Булгаков" in response.text
+    
 @allure.feature("API")
 @allure.story("Поиск книг на кириллице")
 @pytest.mark.api_test
