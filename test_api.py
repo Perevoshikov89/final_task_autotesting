@@ -3,8 +3,8 @@ import allure
 import pytest
 import unittest
 
-BASE_URL = "web-gate.chitai-gorod.ru/api/v1"
-BASE_URL_2 = "web-gate.chitai-gorod.ru/api/v2"
+BASE_URL = "https://web-gate.chitai-gorod.ru/api/v1"
+BASE_URL_2 = "https://web-gate.chitai-gorod.ru/api/v2"
 TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTg1NTUxNzgsImlhdCI6MTcxODM4NzE3OCwiaXNzIjoiL2FwaS92MS9hdXRoL2Fub255bW91cyIsInN1YiI6ImMxYWQzYWFlN2NlZGE0NWVkNTE2NWNjYzM5NThiYTdlNDA0NjEwZjRmMDk1OGIyNTAyOGU2M2YxNDYwZjMyYWUiLCJ0eXBlIjoxMH0.bGnqNUZ0Btx-9_Vq2cdwVDVhUWuhNnPOD6fkdJt4zuQ"
 book_id = "master-i-margarita-3018590"
 
@@ -18,7 +18,7 @@ def test_get_books():
         'content-type': 'application/json',
         'authorization': f'Bearer {TOKEN}'
     }
-    response = requests.get(f"https://{BASE_URL_2}/products", headers=headers)
+    response = requests.get(f"{BASE_URL_2}/products", headers=headers)
     assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"
 
 
@@ -35,7 +35,7 @@ def test_get_book_by_id():
         'authorization': f'Bearer {TOKEN}'
     }
 
-    response = requests.get(f"https://{BASE_URL}/products/slug/{book_id}", headers=headers)
+    response = requests.get(f"{BASE_URL}/products/slug/{book_id}", headers=headers)
     assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"
     assert "Булгаков" in response.text
     
@@ -49,7 +49,7 @@ def test_search_books_rus():
         'authorization': f'Bearer {TOKEN}'
     }
 
-    response = requests.get(f"https://{BASE_URL_2}/search/product?phrase=мастер и маргарита", headers=headers)
+    response = requests.get(f"{BASE_URL_2}/search/product?phrase=мастер и маргарита", headers=headers)
     assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"
 
 @allure.feature("API")
@@ -62,7 +62,7 @@ def test_search_books_eng():
         'authorization': f'Bearer {TOKEN}'
     }
 
-    response = requests.get(f"https://{BASE_URL_2}/search/product?phrase=phyton", headers=headers)
+    response = requests.get(f"{BASE_URL_2}/search/product?phrase=phyton", headers=headers)
     assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"
 
 @allure.feature("API")
@@ -75,7 +75,7 @@ def test_search_unicode_symbols():
         'authorization': f'Bearer {TOKEN}'
     }
 
-    response = requests.get(f"https://{BASE_URL_2}/search/product?phrase=✉ § © ☯ ☭ ? $ £ ¢", headers=headers)
+    response = requests.get(f"{BASE_URL_2}/search/product?phrase=✉ § © ☯ ☭ ? $ £ ¢", headers=headers)
     assert response.status_code == 422, f"Ожидался статус-код 422, но получен {response.status_code}"
 
 
@@ -89,7 +89,7 @@ def test_search_space():
         'authorization': f'Bearer {TOKEN}'
     }
 
-    response = requests.get(f"https://{BASE_URL_2}/search/product?phrase=   ", headers=headers)
+    response = requests.get(f"{BASE_URL_2}/search/product?phrase=   ", headers=headers)
     assert response.status_code == 422, f"Ожидался статус-код 422, но получен {response.status_code}"
 
 
@@ -103,7 +103,7 @@ def test_get_category_books():
         'authorization': f'Bearer {TOKEN}'
     }
 
-        response = requests.get(f"https://{BASE_URL_2}/products?forceFilters[categories]=110282", headers=headers)
+        response = requests.get(f"{BASE_URL_2}/products?forceFilters[categories]=110282", headers=headers)
         assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"
 
 @allure.feature("API")
@@ -116,7 +116,7 @@ def test_get_filtres_books():
         'authorization': f'Bearer {TOKEN}'
     }
 
-        response = requests.get(f"https://{BASE_URL_2}/products?filters[onlyNew]=1", headers=headers)
+        response = requests.get(f"{BASE_URL_2}/products?filters[onlyNew]=1", headers=headers)
         assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"      
 
 
@@ -130,7 +130,7 @@ def test_get_books_by_author():
         'authorization': f'Bearer {TOKEN}'
     }
 
-        response = requests.get(f"https://{BASE_URL_2}/products/facet?filters[authors]=593251", headers=headers)
+        response = requests.get(f"{BASE_URL_2}/products/facet?filters[authors]=593251", headers=headers)
         assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}" 
 
 @allure.feature("API")
@@ -143,7 +143,7 @@ def test_get_available_books():
         'authorization': f'Bearer {TOKEN}'
     }
 
-        response = requests.get(f"https://{BASE_URL_2}/products/facet?filters[onlyAvailable]=1", headers=headers)
+        response = requests.get(f"{BASE_URL_2}/products/facet?filters[onlyAvailable]=1", headers=headers)
         assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}" 
 
 @allure.feature("API")
@@ -164,7 +164,7 @@ def test_add_book_to_cart():
         'authorization': f'Bearer {TOKEN}'
     }
 
-    response = requests.post(f"https://{BASE_URL}/cart/product", json=data, headers=headers)
+    response = requests.post(f"{BASE_URL}/cart/product", json=data, headers=headers)
     assert response.status_code == 400, f"Ожидался статус-код 200, но получен {response.status_code}"
 
 @allure.feature("API")
@@ -178,7 +178,7 @@ def test_get_cart():
         'authorization': f'Bearer {TOKEN}'
     }
 
-    response = requests.get(f"https://{BASE_URL}/cart", headers=headers)
+    response = requests.get(f"{BASE_URL}/cart", headers=headers)
     assert response.status_code == 200, f"Ожидался статус-код 200, но получен {response.status_code}"
 
 @allure.feature("API")
@@ -192,5 +192,5 @@ def test_del_book_from_cart():
         'authorization': f'Bearer {TOKEN}'
     }
 
-    response = requests.delete(f"https://{BASE_URL}/cart", headers=headers)
+    response = requests.delete(f"{BASE_URL}/cart", headers=headers)
     assert response.status_code == 204, f"Ожидался статус-код 200, но получен {response.status_code}"
